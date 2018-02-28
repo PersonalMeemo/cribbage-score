@@ -1,6 +1,8 @@
 #daily programmer challenge 335 intermediate scoring a cribbage game
 
 #method declarations
+
+#methods to deal with the data
 def read_file_to_array
 	File.readlines(ARGV.first).to_s
 end
@@ -9,8 +11,30 @@ def slice_string(input)
 	input.slice(2,14).split(/,/)
 end
 
+#create array of just the numbers, substituting for face cards to make them sortable
+def make_numbers_array(cards)
+	card_nums = cards.collect {|card| card.chop}
+	a = card_nums.collect do |card|
+		case card
+		when "A"
+			card = 1
+		when "J"
+			card = 11
+		when "Q"
+			card = 12
+		when "K"
+			card = 13
+		else 
+			card = card.to_i
+		end
+	end
+	a.sort!
+end
+
+#methods to calculate the score
 #check for Nobs 
 def check_for_Nobs(input)
+	nobs_score = 0
 	jack_suit = input[15]
 	test_string = input.slice(0,11)
 	test_array = test_string.split(/,/)
@@ -19,49 +43,33 @@ def check_for_Nobs(input)
 			type = card.slice(0)
 			suit = card.slice(1)
 			if type == "J" && suit == jack_suit
-				score +=1
+				nobs_score +=1
 			end
 		end
 	end
+	nobs_score
 end
-
-puts "Score after Nobs check is " + score.to_s
-
-#create array of just the numbers, substituting for face cards to make them sortable
-card_nums = cards.collect {|card| card.chop}
-a = card_nums.collect do |card|
-	case card
-	when "A"
-		card = 1
-	when "J"
-		card = 11
-	when "Q"
-		card = 12
-	when "K"
-		card = 13
-	else 
-		card = card.to_i
-	end
-end
-
-a.sort!
 
 #finding multiples
-unique = a.uniq
-case a.length-unique.length
-when 3
-	score+=12
-when 2
-	#distinguish between two pairs and a group of 3
-	if (a[0]==a[1] && a[1]==a[2]) || (a[1]==a[2] && a[2]==a[3] || a[2]==a[3] && a[3]==a[4])
-		score+=4
-	else
-		score+=2
+def finding_multiples
+	multiples_score = 0
+	unique = a.uniq
+	case a.length-unique.length
+	when 3
+		multiples_score+=12
+	when 2
+		#distinguish between two pairs and a group of 3
+		if (a[0]==a[1] && a[1]==a[2]) || (a[1]==a[2] && a[2]==a[3] || a[2]==a[3] && a[3]==a[4])
+			multiples_score+=4
+		else
+			multiples_score+=2
+		end
+	when 1
+		multiples_score+=2
 	end
-when 1
-	score+=2
+	multiples_score
 end
-puts "Score after checking for pairs is " + score.to_s
+
 
 #find consecutive cards
 a.collect do |card|
@@ -132,5 +140,10 @@ puts "Final score is " + score.to_s
 #program starts here
 input = read_file_to_array
 score = 0
-cards = slice
-check_for_Nobs(cards)
+cards = slice_string(input)
+numbers = make_numbers_array(cards)
+score+=check_for_Nobs(input)
+puts "Score after Nobs check is " + score.to_s
+score+=multiples_score
+puts "Score after checking for pairs is " + score.to_s
+
