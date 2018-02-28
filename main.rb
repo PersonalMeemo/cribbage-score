@@ -31,7 +31,7 @@ def make_numbers_array(cards)
 	a.sort!
 end
 
-#first converts face cards to make numerical scoring simple
+#converts face cards to make numerical scoring simple
 def remove_face_cards(a)
 	a_15s = a.collect do |card|
 		if card == 11 || card == 12 || card == 13
@@ -40,6 +40,7 @@ def remove_face_cards(a)
 			card = card
 		end
 	end
+	a_15s
 end
 
 #methods to calculate the score
@@ -61,7 +62,7 @@ def check_for_Nobs(input)
 	nobs_score
 end
 
-def finding_multiples
+def finding_multiples(a)
 	multiples_score = 0
 	unique = a.uniq
 	case a.length-unique.length
@@ -82,7 +83,7 @@ end
 
 
 #find consecutive cards
-def find_consecutives
+def find_consecutives(a)
 	consecutives_score = 0
 	a.collect do |card|
 		if a.include? (card+1)
@@ -125,7 +126,7 @@ def calculate_15s(a_15s)
 	fifteens_score
 end
 
-def compare_suits
+def compare_suits(cards)
 	suits_score = 0
 	card_suit = cards.collect {|card| card.slice(1)}
 	if card_suit.length-card_suit.uniq.length == 4
@@ -147,9 +148,9 @@ numbers = make_numbers_array(cards)
 no_face_cards = remove_face_cards(numbers)
 score+=check_for_Nobs(input)
 puts "Score after Nobs check is " + score.to_s
-score+=multiples_score
+score+=multiples_score(numbers)
 puts "Score after checking for pairs is " + score.to_s
-score+=find_consecutives
+score+=find_consecutives(numbers)
 puts "Score after checking for runs is " + score.to_s
 score+=calculate_15s(numbers)
 puts "Score after checking for 15s is " + score.to_s
