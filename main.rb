@@ -1,21 +1,26 @@
 #daily programmer challenge 335 intermediate scoring a cribbage game
 
-input = File.readlines(ARGV.first).to_s
-puts input
-cards = input.slice(2,14).split(/,/)
-puts cards
-score = 0
+#method declarations
+def read_file_to_array
+	File.readlines(ARGV.first).to_s
+end
+
+def slice_string(input)
+	input.slice(2,14).split(/,/)
+end
 
 #check for Nobs 
-jack_suit = input[15]
-test_string = input.slice(0,11)
-test_array = test_string.split(/,/)
-if test_string.include? ("J")
-	test_array.each do |card|
-		type = card.slice(0)
-		suit = card.slice(1)
-		if type == "J" && suit == jack_suit
-			score +=1
+def check_for_Nobs(input)
+	jack_suit = input[15]
+	test_string = input.slice(0,11)
+	test_array = test_string.split(/,/)
+	if test_string.include? ("J")
+		test_array.each do |card|
+			type = card.slice(0)
+			suit = card.slice(1)
+			if type == "J" && suit == jack_suit
+				score +=1
+			end
 		end
 	end
 end
@@ -123,3 +128,9 @@ end
 puts "Score after checking for cards of same suit is " + score.to_s
 
 puts "Final score is " + score.to_s
+
+#program starts here
+input = read_file_to_array
+score = 0
+cards = slice
+check_for_Nobs(cards)
