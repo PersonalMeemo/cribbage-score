@@ -146,14 +146,15 @@ score = 0
 cards = slice_string(input)
 numbers = make_numbers_array(cards)
 no_face_cards = remove_face_cards(numbers)
+puts "Cards are " + cards.to_s
 score+=check_for_Nobs(input)
 puts "Score after Nobs check is " + score.to_s
-score+=multiples_score(numbers)
+score+=finding_multiples(numbers)
 puts "Score after checking for pairs is " + score.to_s
 score+=find_consecutives(numbers)
 puts "Score after checking for runs is " + score.to_s
-score+=calculate_15s(numbers)
+score+=calculate_15s(no_face_cards)
 puts "Score after checking for 15s is " + score.to_s
-score+=suits_score(cards)
+score+=compare_suits(cards)
 puts "Score after checking for cards of same suit is " + score.to_s
 puts "Final score is " + score.to_s
